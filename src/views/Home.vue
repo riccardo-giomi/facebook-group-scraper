@@ -8,7 +8,9 @@
       <Instructions>
         <div class="p-3" v-if="loggedIn">
           <div><SelectFBGroup /></div>
-          <div class="mt-2"><FilterFBPostFields /></div>
+          <div class="mt-2">
+            <FilterFBPostFields />
+          </div>
           <div v-if="group">
             <div><ExportFBPostsToText /></div>
             <div class="mt-3"><ShowFBPosts /></div>

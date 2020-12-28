@@ -1,12 +1,12 @@
 <template>
-  <v-facebook-login
+  <VFacebookLogin
     v-model="connection"
     :app-id="facebookAppId"
     :login-options="facebookLoginOptions"
     @sdk-init="facebookSDKInitialized"
     @login="userLoggedIn"
-    @logout="userLoggedOut"
-  ></v-facebook-login>
+    @logout="userLoggedOut">
+  </VFacebookLogin>
 </template>
 
 <script>
