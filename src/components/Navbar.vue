@@ -1,6 +1,6 @@
 <template>
-  <b-navbar toggleable="lg" type="light" variant="info">
-    <b-navbar-brand to="/">Facebook Group Scraper</b-navbar-brand>
+  <b-navbar toggleable="sm" type="light" variant="info">
+    <b-navbar-brand :to="homePath">Facebook Group Scraper</b-navbar-brand>
 
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -12,3 +12,19 @@
     </b-collapse>
   </b-navbar>
 </template>
+
+<script>
+import { mapGetters } from 'vuex'
+
+export default {
+  name: 'Navbar',
+  computed: {
+    ...mapGetters({ group: 'getRequestedGroupId' }),
+    homePath() {
+      let path = '/'
+      if (this.group) path += String(this.group)
+      return path
+    }
+  }
+}
+</script>

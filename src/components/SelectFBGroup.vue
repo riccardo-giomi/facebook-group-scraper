@@ -1,5 +1,10 @@
 <template>
-  <VueSelect label="name" :options="groups" @input="groupSelected" />
+  <VueSelect
+    label="name"
+    :value="group"
+    :options="groups"
+    @input="groupSelected"
+  />
 </template>
 
 <script>
@@ -15,11 +20,10 @@ export default {
   computed: mapGetters({ groups: 'getGroups', group: 'getCurrentGroup' }),
   methods: {
     ...mapActions(['setCurrentGroup', 'fetchPosts']),
-    groupSelected(value) {
-      if (value && value.id) {
-        this.setCurrentGroup(value)
+    groupSelected(group) {
+      if (group && group.id) {
+        this.setCurrentGroup(group)
       } else this.setCurrentGroup(null)
-      this.fetchPosts()
     }
   }
 }

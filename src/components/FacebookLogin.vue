@@ -5,7 +5,8 @@
     :login-options="facebookLoginOptions"
     @sdk-init="facebookSDKInitialized"
     @login="userLoggedIn"
-    @logout="userLoggedOut">
+    @logout="userLoggedOut"
+  >
   </VFacebookLogin>
 </template>
 
@@ -25,7 +26,7 @@ export default {
   },
   computed: mapGetters({ loggedIn: 'getLoggedIn' }),
   methods: {
-    ...mapActions(['setSDK', 'setLoginStatus', 'fetchGroups']),
+    ...mapActions(['setSDK', 'login', 'logout', 'fetchGroups']),
     facebookSDKInitialized({ FB }) {
       FB.getLoginStatus(response => {
         if (response.status === 'connected') {
@@ -36,22 +37,13 @@ export default {
     },
     userLoggedIn(response) {
       if (response && response.status === 'connected') {
-        const authResponse = response.authResponse
-        this.setLoginStatus({
-          loggedIn: true,
-          token: authResponse.accessToken,
-          userId: authResponse.userID
-        })
-        this.fetchGroups()
+        const { accessToken: token, userID: userId } = response.authResponse
+        this.login({ token, userId }).then(() => this.$emit('user-logged-in'))
       }
     },
     userLoggedOut(response) {
-      if (response && response.status !== 'connected') {
-        this.setLoginStatus({
-          loggedIn: false,
-          token: '',
-          userId: ''
-        })
+      if (response) {
+        this.logout().then(() => this.$emit('user-logged-out'))
       }
     }
   },

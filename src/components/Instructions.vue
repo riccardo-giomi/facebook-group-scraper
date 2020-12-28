@@ -1,6 +1,6 @@
 <template>
-  <b-jumbotron border-variant="dark" class="mt-5">
-    <template #lead>
+  <ContentBody>
+    <template v-slot:lead>
       <h2>Extracts post information from a facebook group</h2>
 
       <b-button size="sm" v-b-toggle.collapse-instructions class="m-1"
@@ -25,18 +25,19 @@
         </b-list-group>
       </b-collapse>
     </template>
-
-    <hr class="my-4" />
-
     <slot></slot>
-  </b-jumbotron>
+  </ContentBody>
 </template>
 
 <script>
+import ContentBody from '@/components/ContentBody.vue'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'Instructions',
+  components: {
+    ContentBody
+  },
   computed: mapGetters({ loggedIn: 'getLoggedIn', group: 'getCurrentGroup' })
 }
 </script>

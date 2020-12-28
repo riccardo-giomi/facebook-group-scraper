@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 import groups from './modules/groups.js'
 import posts from './modules/posts.js'
+import post from './modules/post.js'
 
 Vue.use(Vuex)
 
@@ -12,6 +13,7 @@ export default new Vuex.Store({
     loggedIn: false,
     token: '',
     userId: '',
+    requestedGroupId: null,
     currentGroup: null
   },
   getters: {
@@ -19,17 +21,35 @@ export default new Vuex.Store({
     getLoggedIn: state => state.loggedIn,
     getToken: state => state.token,
     getUserId: state => state.userId,
+    getRequestedGroupId: state => state.requestedGroupId,
     getCurrentGroup: state => state.currentGroup
   },
   actions: {
     setSDK({ commit }, sdk) {
       commit('updateSDK', sdk)
     },
-    setLoginStatus({ commit }, { loggedIn, token, userId }) {
-      commit('updateLoginStatus', { loggedIn, token, userId })
+    login({ commit, dispatch }, { token, userId }) {
+      commit('updateLoginStatus', { loggedIn: true, token, userId })
+    },
+    logout({ commit, dispatch }) {
+      commit('updateLoginStatus', {
+        loggedIn: false,
+        token: '',
+        userId: ''
+      })
     },
     setCurrentGroup({ commit }, group) {
       commit('updateCurrentGroup', group)
+    },
+    setRequestedGroupId({ commit }, id) {
+      commit('updateRequestedGroupId', id)
+    },
+    findRequestedGroupAndSetAsCurrent({ getters, commit }) {
+      const id = getters.getRequestedGroupId
+      if (id) {
+        const group = getters.getGroups.find(g => g.id === id)
+        if (group) commit('updateCurrentGroup', group)
+      }
     }
   },
   mutations: {
@@ -41,12 +61,16 @@ export default new Vuex.Store({
       state.token = token || ''
       state.userId = userId || ''
     },
+    updateRequestedGroupId(state, id) {
+      state.requestedGroupId = id
+    },
     updateCurrentGroup(state, group) {
       state.currentGroup = group
     }
   },
   modules: {
     groups,
-    posts
+    posts,
+    post
   }
 })

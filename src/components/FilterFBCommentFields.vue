@@ -11,27 +11,27 @@
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  name: 'FilterFBPostsFields',
+  name: 'FilterFBCommentFields',
   data() {
     return {
       options: [
-        { text: 'Date', value: 'updated_time' },
+        { text: 'Date', value: 'created_time' },
         { text: 'Author', value: 'from' },
-        { text: 'Text', value: 'text' }
+        { text: 'Text', value: 'message' }
       ]
     }
   },
   computed: {
-    ...mapGetters({ fields: 'getFields' }),
+    ...mapGetters({ fields: 'getCommentFields' }),
     selected: {
       get() {
         return this.fields
       },
       set(selected) {
-        this.setFields(selected)
+        this.setCommentFields(selected)
       }
     }
   },
-  methods: mapActions(['setFields'])
+  methods: mapActions(['setCommentFields'])
 }
 </script>

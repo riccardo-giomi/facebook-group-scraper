@@ -7,10 +7,10 @@ const getters = {
 }
 
 const actions = {
-  fetchGroups({ rootState, commit }) {
-    if (rootState.loggedIn) {
-      const sdk = rootState.sdk
-      const userId = rootState.userId
+  fetchGroups({ commit, getters, dispatch }) {
+    if (getters.getLoggedIn) {
+      const sdk = getters.getSDK
+      const userId = getters.getUserId
       try {
         sdk.api(`/${userId}/groups?fields=name,administrator`, function(
           response
@@ -19,10 +19,14 @@ const actions = {
             group => group.administrator === true
           )
           commit('updateGroups', administeredGroups)
+          dispatch('findRequestedGroupAndSetAsCurrent')
         })
       } catch (e) {
         console.log(e)
       }
+    } else {
+      commit('updateGroups', [])
+      commit('updateCurrentGroup', null)
     }
   }
 }

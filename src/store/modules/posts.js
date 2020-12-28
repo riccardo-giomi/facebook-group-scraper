@@ -1,6 +1,6 @@
 const state = {
   posts: [],
-  fields: ['from', 'updated_time', 'story']
+  fields: ['from', 'updated_time', 'text']
 }
 
 const getters = {
@@ -9,20 +9,21 @@ const getters = {
 }
 
 const actions = {
-  fetchPosts({ rootState, commit }) {
-    if (rootState.loggedIn && rootState.currentGroup) {
-      const sdk = rootState.sdk
-      const groupId = rootState.currentGroup.id
+  fetchPosts({ commit, getters }) {
+    if (getters.getLoggedIn && getters.getCurrentGroup) {
+      const sdk = getters.getSDK
+      const groupId = getters.getCurrentGroup.id
       try {
-        sdk.api(`/${groupId}/feed?fields=from, updated_time, story`, function(
-          response
-        ) {
-          commit('updatePosts', response.data)
-        })
+        sdk.api(
+          `/${groupId}/feed?fields=from,updated_time,story,message`,
+          function(response) {
+            commit('updatePosts', response.data)
+          }
+        )
       } catch (e) {
         console.log(e)
       }
-    }
+    } else commit('updatePosts', [])
   },
   setFields({ commit }, fields) {
     commit('updateFields', fields)
@@ -44,17 +45,3 @@ export default {
   actions,
   mutations
 }
-
-/*  getPosts: (state, _getters, rootState) => {
-    if (rootState.loggedIn) {
-      const sdk = rootState.sdk
-      const userId = rootState.userId
-
-      sdk.api(`/${userId}/posts`, function(response) {
-        state.posts = response.data
-      })
-    } else {
-      return state.posts
-    }
-  }
-*/

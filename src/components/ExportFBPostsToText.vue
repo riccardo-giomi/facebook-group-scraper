@@ -21,6 +21,9 @@ export default {
         for (let field of this.fields) {
           if (field === 'from') {
             content += post.from.name + '\n'
+          } else if (field === 'text') {
+            if (post.story) content += post.story + '\n'
+            if (post.message) content += post.message + '\n'
           } else {
             content += post[field] + '\n'
           }
