@@ -7,7 +7,7 @@
             <small>{{ post.updated_time | formatDate }}</small>
           </div>
           <div v-if="fields.includes('from')">
-            <small>{{ post.from.name }}</small>
+            <small>{{ post.from | formatAuthor }}</small>
           </div>
           <p v-if="fields.includes('text')">
             <Truncate :text="post.story" v-if="post.story" />
@@ -47,7 +47,8 @@ export default {
     }
   },
   filters: {
-    formatDate: string => moment(string)
+    formatDate: string => moment(string),
+    formatAuthor: from => from ? from.name : '-PERMISSION REQUIRED-'
   }
 }
 </script>

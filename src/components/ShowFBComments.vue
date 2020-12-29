@@ -7,7 +7,7 @@
           <small>{{ comment.created_time | formatDate }}</small>
         </div>
         <div v-if="fields.includes('from')">
-          <small>{{ comment.from.name }}</small>
+          <small>{{ comment.from | formatAuthor}}</small>
         </div>
         <p v-if="fields.includes('message')">
           <Truncate :text="comment.message" v-if="comment.message" />
@@ -33,7 +33,8 @@ export default {
     fields: 'getCommentFields'
   }),
   filters: {
-    formatDate: string => moment(string)
+    formatDate: string => moment(string),
+    formatAuthor: from => from ? from.name : '-PERMISSION REQUIRED-'
   }
 }
 </script>
