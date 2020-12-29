@@ -6,7 +6,9 @@
     <b-container class="d-md-flex justify-content-center">
       <ContentBody v-if="post">
         <template v-slot:lead>
-          <h3>{{ post.message || post.story }}</h3>
+          <b-card>
+            <small>{{ post.message || post.story }}</small>
+          </b-card>
         </template>
         <div v-if="hasComments()">
           <FilterFBCommentFields />
